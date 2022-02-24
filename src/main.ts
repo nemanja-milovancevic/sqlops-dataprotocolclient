@@ -891,7 +891,7 @@ export class BackupFeature extends SqlOpsFeature<undefined> {
 		let createSas = (blobContainerUri: string): Thenable<azdata.CreateSasResponse> => {
 			let params: types.CreateSasParams = { blobContainerUri };
 			return client.sendRequest(protocol.CreateSasRequest.type, params).then(
-				r => r.sharedAccessSignature,
+				r => r,
 				e => {
 					client.logFailedRequest(protocol.CreateSasRequest.type, e);
 					return Promise.resolve(undefined);
