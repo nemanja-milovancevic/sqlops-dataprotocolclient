@@ -268,6 +268,9 @@ export interface BackupParams {
     backupInfo: BackupInfo;
     taskExecutionMode: azdata.TaskExecutionMode;
 }
+export interface CreateSasParams {
+    blobContainerUri: string;
+}
 export interface RestoreParams {
     ownerUri: string;
     options: {};

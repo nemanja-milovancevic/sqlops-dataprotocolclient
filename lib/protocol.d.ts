@@ -413,6 +413,9 @@ export declare namespace BackupRequest {
 export declare namespace BackupConfigInfoRequest {
     const type: RequestType<types.DefaultDatabaseInfoParams, types.BackupConfigInfoResponse, void, void>;
 }
+export declare namespace CreateSasRequest {
+    const type: RequestType<types.CreateSasParams, any, void, void>;
+}
 export declare namespace RestoreRequest {
     const type: RequestType<types.RestoreParams, azdata.RestoreResponse, void, void>;
 }
