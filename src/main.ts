@@ -887,9 +887,9 @@ export class BackupFeature extends SqlOpsFeature<undefined> {
 				}
 			);
 		};
-		
-		let createSas = (blobContainerUri: string): Thenable<azdata.CreateSasResponse> => {
-			let params: types.CreateSasParams = { blobContainerUri };
+
+		let createSas = (ownerUri: string, blobContainerUri: string): Thenable<azdata.CreateSasResponse> => {
+			let params: types.CreateSasParams = { ownerUri, blobContainerUri };
 			return client.sendRequest(protocol.CreateSasRequest.type, params).then(
 				r => r,
 				e => {
@@ -897,7 +897,7 @@ export class BackupFeature extends SqlOpsFeature<undefined> {
 					return Promise.resolve(undefined);
 				}
 			);
-		}
+		};
 
 		return azdata.dataprotocol.registerBackupProvider({
 			providerId: client.providerId,
