@@ -888,8 +888,8 @@ export class BackupFeature extends SqlOpsFeature<undefined> {
 			);
 		};
 
-		let createSas = (ownerUri: string, blobContainerUri: string, blobContainerKey: string): Thenable<azdata.CreateSasResponse> => {
-			let params: types.CreateSasParams = { ownerUri, blobContainerUri, blobContainerKey };
+		let createSas = (ownerUri: string, blobContainerUri: string, blobContainerKey: string, storageAccountName: string): Thenable<azdata.CreateSasResponse> => {
+			let params: types.CreateSasParams = { ownerUri, blobContainerUri, blobContainerKey, storageAccountName };
 			return client.sendRequest(protocol.CreateSasRequest.type, params).then(
 				r => r,
 				e => {

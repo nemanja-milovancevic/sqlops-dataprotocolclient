@@ -371,6 +371,7 @@ export interface CreateSasParams {
 	ownerUri: string;
 	blobContainerUri: string;
 	blobContainerKey: string;
+	storageAccountName: string;
 }
 
 export interface RestoreParams {
