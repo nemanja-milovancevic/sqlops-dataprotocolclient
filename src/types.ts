@@ -370,6 +370,7 @@ export interface BackupParams {
 export interface CreateSasParams {
 	ownerUri: string;
 	blobContainerUri: string;
+	blobContainerKey: string;
 }
 
 export interface RestoreParams {
