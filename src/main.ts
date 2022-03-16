@@ -1353,7 +1353,8 @@ export class SqlOpsDataClient extends LanguageClient {
 		ObjectExplorerFeature,
 		ScriptingFeature,
 		TaskServicesFeature,
-		FileBrowserFeature
+		FileBrowserFeature,
+		BlobFeature
 	];
 
 	private _sqlc2p: Ic2p;
