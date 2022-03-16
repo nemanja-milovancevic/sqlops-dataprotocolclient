@@ -68,6 +68,12 @@ export interface ConnectionClientCapabilities {
          */
         dynamicRegistration?: boolean;
     };
+    blob?: {
+        /**
+         *
+         */
+        dynamicRegistration?: boolean;
+    };
 }
 export interface ClientCapabilities extends VSClientCapabilities {
     connection?: ConnectionClientCapabilities;

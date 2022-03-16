@@ -888,6 +888,37 @@ export class BackupFeature extends SqlOpsFeature<undefined> {
 			);
 		};
 
+		return azdata.dataprotocol.registerBackupProvider({
+			providerId: client.providerId,
+			backup,
+			getBackupConfigInfo
+		});
+	}
+}
+
+export class BlobFeature extends SqlOpsFeature<undefined> {
+	private static readonly messagesTypes: RPCMessageType[] = [
+		protocol.CreateSasRequest.type
+	];
+
+	constructor(client: SqlOpsDataClient) {
+		super(client, BlobFeature.messagesTypes);
+	}
+
+	public fillClientCapabilities(capabilities: protocol.ClientCapabilities): void {
+		ensure(ensure(capabilities, 'connection')!, 'blob')!.dynamicRegistration = true;
+	}
+
+	public initialize(capabilities: ServerCapabilities): void {
+		this.register(this.messages, {
+			id: UUID.generateUuid(),
+			registerOptions: undefined
+		});
+	}
+
+	protected registerProvider(options: undefined): Disposable {
+		const client = this._client;
+
 		let createSas = (ownerUri: string, blobContainerUri: string, blobContainerKey: string, storageAccountName: string): Thenable<azdata.CreateSasResponse> => {
 			let params: types.CreateSasParams = { ownerUri, blobContainerUri, blobContainerKey, storageAccountName };
 			return client.sendRequest(protocol.CreateSasRequest.type, params).then(
@@ -899,10 +930,8 @@ export class BackupFeature extends SqlOpsFeature<undefined> {
 			);
 		};
 
-		return azdata.dataprotocol.registerBackupProvider({
+		return azdata.dataprotocol.registerBlobProvider({
 			providerId: client.providerId,
-			backup,
-			getBackupConfigInfo,
 			createSas
 		});
 	}

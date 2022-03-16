@@ -67,6 +67,13 @@ export declare class BackupFeature extends SqlOpsFeature<undefined> {
     initialize(capabilities: ServerCapabilities): void;
     protected registerProvider(options: undefined): Disposable;
 }
+export declare class BlobFeature extends SqlOpsFeature<undefined> {
+    private static readonly messagesTypes;
+    constructor(client: SqlOpsDataClient);
+    fillClientCapabilities(capabilities: protocol.ClientCapabilities): void;
+    initialize(capabilities: ServerCapabilities): void;
+    protected registerProvider(options: undefined): Disposable;
+}
 export declare class RestoreFeature extends SqlOpsFeature<undefined> {
     private static readonly messagesTypes;
     constructor(client: SqlOpsDataClient);
