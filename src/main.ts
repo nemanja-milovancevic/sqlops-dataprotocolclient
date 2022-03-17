@@ -896,47 +896,6 @@ export class BackupFeature extends SqlOpsFeature<undefined> {
 	}
 }
 
-export class BlobFeature extends SqlOpsFeature<undefined> {
-	private static readonly messagesTypes: RPCMessageType[] = [
-		protocol.CreateSasRequest.type
-	];
-
-	constructor(client: SqlOpsDataClient) {
-		super(client, BlobFeature.messagesTypes);
-	}
-
-	public fillClientCapabilities(capabilities: protocol.ClientCapabilities): void {
-		ensure(ensure(capabilities, 'connection')!, 'blob')!.dynamicRegistration = true;
-	}
-
-	public initialize(capabilities: ServerCapabilities): void {
-		this.register(this.messages, {
-			id: UUID.generateUuid(),
-			registerOptions: undefined
-		});
-	}
-
-	protected registerProvider(options: undefined): Disposable {
-		const client = this._client;
-
-		let createSas = (ownerUri: string, blobContainerUri: string, blobContainerKey: string, storageAccountName: string): Thenable<azdata.CreateSasResponse> => {
-			let params: types.CreateSasParams = { ownerUri, blobContainerUri, blobContainerKey, storageAccountName };
-			return client.sendRequest(protocol.CreateSasRequest.type, params).then(
-				r => r,
-				e => {
-					client.logFailedRequest(protocol.CreateSasRequest.type, e);
-					return Promise.resolve(undefined);
-				}
-			);
-		};
-
-		return azdata.dataprotocol.registerBlobProvider({
-			providerId: client.providerId,
-			createSas
-		});
-	}
-}
-
 export class RestoreFeature extends SqlOpsFeature<undefined> {
 	private static readonly messagesTypes: RPCMessageType[] = [
 		protocol.RestorePlanRequest.type,
@@ -1013,6 +972,48 @@ export class RestoreFeature extends SqlOpsFeature<undefined> {
 			getRestoreConfigInfo,
 			getRestorePlan,
 			restore
+		});
+	}
+}
+
+export class BlobFeature extends SqlOpsFeature<undefined> {
+	private static readonly messagesTypes: RPCMessageType[] = [
+		protocol.CreateSasRequest.type
+	];
+
+	constructor(client: SqlOpsDataClient) {
+		super(client, BlobFeature.messagesTypes);
+	}
+
+	public fillClientCapabilities(capabilities: protocol.ClientCapabilities): void {
+		ensure(ensure(capabilities, 'connection')!, 'blob')!.dynamicRegistration = true;
+	}
+
+	public initialize(capabilities: ServerCapabilities): void {
+		this.register(this.messages, {
+			id: UUID.generateUuid(),
+			registerOptions: undefined
+		});
+	}
+
+	protected registerProvider(options: undefined): Disposable {
+		const client = this._client;
+
+		let createSas = (ownerUri: string, blobContainerUri: string, blobContainerKey: string, storageAccountName: string, expirationDate: string)
+		: Thenable<azdata.CreateSasResponse> => {
+			let params: types.CreateSasParams = { ownerUri, blobContainerUri, blobContainerKey, storageAccountName, expirationDate };
+			return client.sendRequest(protocol.CreateSasRequest.type, params).then(
+				r => r,
+				e => {
+					client.logFailedRequest(protocol.CreateSasRequest.type, e);
+					return Promise.resolve(undefined);
+				}
+			);
+		};
+
+		return azdata.dataprotocol.registerBlobProvider({
+			providerId: client.providerId,
+			createSas
 		});
 	}
 }
